@@ -22,7 +22,11 @@ class HashTable:
 
     def __init__(self, capacity):
         # Your code here
+        self.capacity = MIN_CAPACITY
+        self.hash_table = [None] * self.capacity
 
+    def __str__(self):
+        return f'{self.hash_table}'
 
     def get_num_slots(self):
         """
@@ -34,7 +38,7 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        pass
 
 
     def get_load_factor(self):
@@ -44,7 +48,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
-
+        pass
 
     def fnv1(self, key):
         """
@@ -54,7 +58,7 @@ class HashTable:
         """
 
         # Your code here
-
+        pass
 
     def djb2(self, key):
         """
@@ -62,7 +66,10 @@ class HashTable:
 
         Implement this, and/or FNV-1.
         """
-        # Your code here
+        hash = 5381
+        for x in key:
+            hash = ((hash << 5) + hash) + ord(x)
+        return hash & 0xFFFFFFFF
 
 
     def hash_index(self, key):
@@ -81,7 +88,12 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        key_sum = self.hash_index(key)
+
+        #inserting the value at the given index
+        self.hash_table[key_sum] = value
+
+        return f'{value} inserted at {key_sum} in the hash table.'
 
 
     def delete(self, key):
@@ -92,8 +104,12 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        key_hashed = self.hash_index(key)
 
+        deleted = self.hash_table[key_hashed]
+        self.hash_table[key_hashed] = None
+
+        return f'{deleted} has been deleted from the hash table.'
 
     def get(self, key):
         """
@@ -103,7 +119,7 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        return self.hash_table[self.hash_index(key)]
 
 
     def resize(self, new_capacity):
@@ -113,7 +129,7 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        pass
 
 
 
@@ -151,3 +167,10 @@ if __name__ == "__main__":
         print(ht.get(f"line_{i}"))
 
     print("")
+    print('The hashtable:')
+    print(ht)
+
+    print('Get line five:', ht.get("line_5"))
+
+    print('Delete line five:', ht.delete("line_5"))
+    print(ht) 
